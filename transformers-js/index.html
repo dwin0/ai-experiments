@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #image-container {
+        width: 100%;
+        margin-top: 20px;
+        position: relative;
+      }
+
+      #image-container > img {
+        width: 100%;
+      }
+
+      .bounding-box {
+        position: absolute;
+        box-sizing: border-box;
+      }
+
+      .bounding-box-label {
+        position: absolute;
+        color: white;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <form>
+        <input id="file-upload" type="file" accept="image/*" />
+      </form>
+
+      <div id="image-container"></div>
+      <p id="status">"Loading model..."</p>
+    </main>
+
+    <script src="./index.js" type="module"></script>
+  </body>
+</html>

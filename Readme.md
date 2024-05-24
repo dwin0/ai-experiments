@@ -36,6 +36,11 @@
 
 - OpenAI API with NextJS Server Components: https://www.youtube.com/watch?v=UDm-hvwpzBI (Good way to sell more compute time)
   - Why use the Vercel AI SDK?: https://sdk.vercel.ai/docs/introduction#why-use-the-vercel-ai-sdk
+  - Problems:
+    - Seems too focused on tools / functions
+    - Documentation is confusing
+      - Role tool specified here, but seems to cause problems: https://sdk.vercel.ai/docs/reference/ai-sdk-rsc/stream-ui#messages-role (tool vs function)
+      - No way to overwrite openAI settings. Lots of abstractions
 
 ## Discussion:
 

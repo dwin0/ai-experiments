@@ -32,5 +32,13 @@
 
 1. Install library: https://huggingface.co/docs/transformers.js/main/en/installation
 2. Use pipeline API and optionally provide model. Models can be implicit. Explicit models can be found by clicking on one of the tasks.
+3. See more examples: https://huggingface.co/docs/transformers.js/main/en/index#examples
 
 - OpenAI API with NextJS Server Components: https://www.youtube.com/watch?v=UDm-hvwpzBI (Good way to sell more compute time)
+  - Why use the Vercel AI SDK?: https://sdk.vercel.ai/docs/introduction#why-use-the-vercel-ai-sdk
+
+## Discussion:
+
+- Own experience with AI?
+- AI in projects?
+- Ideas for further exploration?

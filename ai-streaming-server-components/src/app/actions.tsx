@@ -2,7 +2,7 @@
 
 import { openai } from "@ai-sdk/openai";
 import { nanoid } from "ai";
-import { createAI, getMutableAIState, streamUI } from "ai/rsc";
+import { createAI, getAIState, getMutableAIState, streamUI } from "ai/rsc";
 import { ReactNode } from "react";
 import dotenv from "dotenv";
 import { z } from "zod";
@@ -22,7 +22,7 @@ export interface AIStateMessage {
 // can only be accessed on client (managed on client always)
 export interface UIStateMessage {
   id: string;
-  role: "user" | "assistant";
+  role: "user" | "assistant" | "tool" | "system";
   display: ReactNode;
 }
 
@@ -76,15 +76,15 @@ export async function sendMessage(input: string): Promise<UIStateMessage> {
           history.done((messages: AIStateMessage[]) => [
             ...messages,
             { role: "user", content: input },
-            // Tool seems to cause a problem: https://github.com/vercel/ai/blob/ccaf43dcaeeccb427a97901e63ff3ea909a708c5/packages/openai/src/convert-to-openai-chat-messages.ts#L5
+            // Role "tool" seems to cause a problem: https://github.com/vercel/ai/blob/ccaf43dcaeeccb427a97901e63ff3ea909a708c5/packages/openai/src/convert-to-openai-chat-messages.ts#L5
             // {
             //   role: "tool",
             //   content: [
             //     {
             //       type: "tool-result",
-            //       toolCaltoolCallId: nanoid(),
-            //       toolName: "getCurrentWeather",
-            //       result: JSON.stringify({ weather: "sunny" }),
+            //       toolCallId: nanoid(),
+            //       oolName: "getCurrentWeather",
+            //       result: { weather: "sunny" },
             //     },
             //   ],
             // },
@@ -111,25 +111,28 @@ export const AI = createAI<AIStateMessage[], UIStateMessage[]>({
   actions: {
     sendMessage,
   },
-  initialAIState: [],
-  initialUIState: [
+  initialAIState: [
     {
-      id: "0",
       role: "assistant",
-      display: <p>Hey! How can I help you today?</p>,
+      content: "How can I help you today?",
     },
   ],
-  // onGetA: async () => {
-  //   "use server";
+  onGetUIState: async () => {
+    "use server";
 
-  //   const history: AIStateMessage[] = getAIState();
+    const history: AIStateMessage[] = getAIState();
 
-  //   return history.map(({ role, content }) => ({
-  //     id: nanoid(),
-  //     role,
-  //     display: role === "tool" ? <pre>{...JSON.parse(content)}</pre> : content,
-  //   }));
-  // },
+    return history.map(({ role, content }) => ({
+      id: nanoid(),
+      role,
+      display:
+        role === "tool" ? (
+          <pre>{...JSON.parse(content)}</pre>
+        ) : (
+          <p>{content}</p>
+        ),
+    }));
+  },
 });
 
 export type AI = typeof AI;

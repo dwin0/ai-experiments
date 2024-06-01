@@ -21,6 +21,8 @@
   - Examples:
     - Transformers.js: https://huggingface.co/docs/transformers.js/index
       - https://syntax.fm/show/740/local-ai-models-in-javascript-machine-learning-deep-dive-with-xenova
+    - LLM Inference API: https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference/web_js#create_the_task
+      - https://developer.chrome.com/blog/io24-web-ai-wrapup
     - Benefits: Costs (free models)
     - Drawbacks: Download time
 
@@ -41,6 +43,9 @@
     - Documentation is confusing
       - Role tool specified here, but seems to cause problems: https://sdk.vercel.ai/docs/reference/ai-sdk-rsc/stream-ui#messages-role (tool vs function)
       - No way to overwrite openAI settings. Lots of abstractions
+
+## Not in the mood for coding? Google has got you covered
+https://visualblocks.withgoogle.com/
 
 ## Discussion:
 

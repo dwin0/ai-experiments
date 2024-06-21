@@ -1,8 +1,8 @@
 "use server";
 
 import { openai } from "@ai-sdk/openai";
-import { nanoid } from "ai";
-import { createAI, getAIState, getMutableAIState, streamUI } from "ai/rsc";
+import { generateId } from "ai";
+import { createAI, getMutableAIState, streamUI } from "ai/rsc";
 import { ReactNode } from "react";
 import dotenv from "dotenv";
 import { z } from "zod";
@@ -36,6 +36,7 @@ export async function sendMessage(input: string): Promise<UIStateMessage> {
 
   const result = await streamUI({
     // "Fast, inexpensive model for simple tasks"
+    // model: openai("gpt-4"),
     model: openai("gpt-3.5-turbo"),
 
     system: "You are a helpful assistant",
@@ -57,24 +58,30 @@ export async function sendMessage(input: string): Promise<UIStateMessage> {
             { role: "assistant", content },
           ];
         });
-
-        return <div>{content}</div>;
       }
+
+      return <div>{content}</div>;
     },
+
+    toolChoice: "auto",
 
     // As soon as tools are involved, it seems that no other calls are made
     // https://github.com/vercel/ai/blob/ccaf43dcaeeccb427a97901e63ff3ea909a708c5/packages/openai/src/openai-chat-language-model.ts#L125
     tools: {
       getCurrentWeather: {
-        description: "Get the current weather",
+        description:
+          "Get the current weather for the users location. Only use this function when the user wants to know the weather.",
         parameters: z.object({
-          location: z.string().describe("the users location"),
+          location: z
+            .string()
+            .describe("the users location. It must not be empty."),
         }),
         generate: async function* ({ location }) {
           yield <div>Loading weather for {location}...</div>;
 
           history.done((messages: AIStateMessage[]) => [
             ...messages,
+            { role: "user", content: `My current location is: ${location}.` },
             { role: "user", content: input },
             // Role "tool" seems to cause a problem: https://github.com/vercel/ai/blob/ccaf43dcaeeccb427a97901e63ff3ea909a708c5/packages/openai/src/convert-to-openai-chat-messages.ts#L5
             // {
@@ -82,7 +89,7 @@ export async function sendMessage(input: string): Promise<UIStateMessage> {
             //   content: [
             //     {
             //       type: "tool-result",
-            //       toolCallId: nanoid(),
+            //       toolCallId: generateId(),
             //       oolName: "getCurrentWeather",
             //       result: { weather: "sunny" },
             //     },
@@ -101,7 +108,7 @@ export async function sendMessage(input: string): Promise<UIStateMessage> {
   });
 
   return {
-    id: nanoid(),
+    id: generateId(),
     role: "assistant",
     display: result.value,
   };
@@ -111,28 +118,14 @@ export const AI = createAI<AIStateMessage[], UIStateMessage[]>({
   actions: {
     sendMessage,
   },
-  initialAIState: [
+  initialAIState: [],
+  initialUIState: [
     {
+      id: generateId(),
       role: "assistant",
-      content: "How can I help you today?",
+      display: "How can I help you today?",
     },
   ],
-  onGetUIState: async () => {
-    "use server";
-
-    const history: AIStateMessage[] = getAIState();
-
-    return history.map(({ role, content }) => ({
-      id: nanoid(),
-      role,
-      display:
-        role === "tool" ? (
-          <pre>{...JSON.parse(content)}</pre>
-        ) : (
-          <p>{content}</p>
-        ),
-    }));
-  },
 });
 
 export type AI = typeof AI;

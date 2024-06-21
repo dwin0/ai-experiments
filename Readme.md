@@ -38,6 +38,9 @@
 
 - OpenAI API with NextJS Server Components: https://www.youtube.com/watch?v=UDm-hvwpzBI (Good way to sell more compute time)
   - Why use the Vercel AI SDK?: https://sdk.vercel.ai/docs/introduction#why-use-the-vercel-ai-sdk
+  - Important files:
+    - layout.tsx
+    - actions.tsx
   - Problems:
     - Seems too focused on tools / functions
     - Documentation is confusing
@@ -45,6 +48,7 @@
       - No way to overwrite openAI settings. Lots of abstractions
 
 ## Not in the mood for coding? Google has got you covered
+
 https://visualblocks.withgoogle.com/
 
 ## Discussion:

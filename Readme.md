@@ -21,6 +21,8 @@
   - Examples:
     - Transformers.js: https://huggingface.co/docs/transformers.js/index
       - https://syntax.fm/show/740/local-ai-models-in-javascript-machine-learning-deep-dive-with-xenova
+    - TensorflowJS: https://www.tensorflow.org/js
+      - https://www.tensorflow.org/js/models
     - LLM Inference API: https://ai.google.dev/edge/mediapipe/solutions/genai/llm_inference/web_js#create_the_task
       - https://developer.chrome.com/blog/io24-web-ai-wrapup
     - Benefits: Costs (free models)
